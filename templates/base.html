@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block page_title %}{% endblock page_title %}</title>
+    <!-- include styles-->
+    {% include 'snippets/styles.html' %} {% block app_css %}
+    <link rel="stylesheet" href="{% static 'css/styles.css'%}" />
+    {% endblock app_css %}
+  </head>
+  <body>
+    <!-- include nav -->
+    {% include 'snippets/navbar.html' %}
+
+    <div class="container" style="margin-top: 100px">
+      {% block contents %} {% endblock contents %}
+    </div>
+
+    <!-- include scripts-->
+    {% include 'snippets/scripts.html' %}
+  </body>
+</html>

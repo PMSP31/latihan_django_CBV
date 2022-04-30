@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+    {{title}}
+{% endblock page_title %}
+    
+{% block contents %}
+    <div class="row">
+        <!-- main bar -->
+        <div class="col-md-8">
+            <!-- looping list articles -->
+            {% for article in articles %}
+            <h3>
+                <a class="text-dark" href="{% url 'article:detail' article.slug %}">{{article.title}}</a>
+            </h3>
+            <p>
+                Category : <span class="text-muted">{{article.category}}</span> | <span class="text-muted">{{article.published}}</span>
+            </p>
+            <p>
+                {{article.content|truncatewords:50}} <a href="{% url 'article:detail' article.slug %}">Read More</a>
+            </p>
+            {% endfor %}
+
+            <!-- pagination -->
+            {% if is_paginated %}
+                <nav aria-label="...">
+                    <ul class="pagination justify-content-center">
+                        <!-- previous -->
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="{% url 'article:list' page_obj.previous_page_number %}">Previous</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link">Previous</a>
+                            </li>
+                        {% endif %}
+                        
+                        <!-- looping number page -->
+                        {% for page in paginator.page_range %}
+                            {% if page is page_obj.number %}
+                                <li class="page-item active" aria-current="page">
+                                    <span class="page-link"> {{page}} </span>
+                                </li>
+                            {% else %}
+                                <li class="page-item">
+                                    <a href="{% url 'article:list' page %}" class="page-link"> {{page}} </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                            
+                        <!-- next -->
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="{% url 'article:list' page_obj.next_page_number %}">Next</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link">Next</a>
+                            </li>
+                        {% endif %}
+                        
+                    </ul>
+                </nav>
+            {% endif %}
+        </div>
+        <!-- sidebar -->
+        <div class="col-sm">
+            <h3 class="border-bottom">Category : </h3>
+            <ul class="list-group">
+                {% for category in categories %}
+                <li class="list-group-item">
+                    <a href="{% url 'article:category' category %}">
+                        {{category}}
+                    </a>
+                </li>
+                {% endfor %}
+                <li class="list-group-item">
+                    <a href="{% url 'article:list' 1 %}">
+                        All-Category
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock contents %}
+    

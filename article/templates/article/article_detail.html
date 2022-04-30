@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+    {{article.title}}
+{% endblock page_title %}
+
+{% block contents %}
+    <div class="row">
+        <div class="col-md-8">
+            <h1>{{article.title}}</h1>
+            <p class="text-capitalize badge badge-primary">{{article.category}}</p>
+            <p class="text-muted">Published : {{article.published}} </p>
+            <p class="text-muted">Updated : {{article.updated}} </p>
+            <p>{{article.content}}</p>
+        </div>
+        <div class="col-sm">
+            <h3 class="border-bottom">Category : </h3>
+            <ul class="list-group">
+                {% for category in categories %}
+                <li class="list-group-item">
+                    <a href="{% url 'article:category' category %}">
+                        {{category}}
+                    </a>
+                </li>
+                {% endfor %}
+                <li class="list-group-item">
+                    <a href="{% url 'article:list' 1 %}">
+                        All-Category
+                    </a>
+                </li>
+            </ul>
+            <br>
+            <h3>Related Article :</h3>
+            <ul class="list-group">
+                {% for article in related_articles %}
+                <li class="list-group-item">
+                    <a href="{% url 'article:detail' article.slug %}" class="h5 text-dark" >{{article.title}}</a>
+                    <br>
+                    <p class="badge badge-info">{{article.category}}</p>
+                    <p>{{article.published}}</p>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock contents %}
+    
