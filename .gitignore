@@ -1,5 +1,5 @@
 # settings.py files
-mysite/settings.py
-mysite/__pycache__/settings.cpython-310.pyc
+blog/settings.py
+blog/__pycache__/settings.cpython-310.pyc
 
 ./db.sqlite3
