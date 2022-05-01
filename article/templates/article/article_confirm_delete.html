@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+    Delete Article
+{% endblock page_title %}
+    
+{% block contents %}
+    <h1>Are you sure to Delete Article <strong>{{object.title}}</strong> ?? </h1>
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" value="Yes" class="btn btn-danger">
+        <a href="{% url 'article:manage' %}">
+            <input type="button" value="No" class="btn btn-warning">
+        </a>
+    </form>
+{% endblock contents %}
+    

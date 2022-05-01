@@ -1,5 +1,7 @@
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.urls import reverse_lazy
+
 
 # Create your models here.
 class Article(models.Model):
@@ -20,6 +22,9 @@ class Article(models.Model):
     def save(self):
         self.slug = slugify(self.title)
         super().save()
+
+    def get_absolute_url(self):
+        return reverse_lazy('article:detail', kwargs={'slug': self.slug})
     
     def __str__(self) :
         return f"{self.id}. {self.title}"

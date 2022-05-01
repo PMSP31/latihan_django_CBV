@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+    Create Article
+{% endblock page_title %}
+    
+
+{% block contents %}
+    <div class="card">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                
+                {% for input in form %}
+                    <div class="form-group">
+                        {{input.label}}
+                        {{input}}
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+{% endblock contents %}
+    

@@ -10,15 +10,19 @@
         <div class="col-md-8">
             <!-- looping list articles -->
             {% for article in articles %}
-            <h3>
-                <a class="text-dark" href="{% url 'article:detail' article.slug %}">{{article.title}}</a>
-            </h3>
-            <p>
-                Category : <span class="text-muted">{{article.category}}</span> | <span class="text-muted">{{article.published}}</span>
-            </p>
-            <p>
-                {{article.content|truncatewords:50}} <a href="{% url 'article:detail' article.slug %}">Read More</a>
-            </p>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <a class="text-dark h3" href="{% url 'article:detail' article.slug %}">{{article.title}}</a>
+                </div>
+                <div class="card-body">
+                    <p>
+                        <span class="badge badge-primary">{{article.category}}</span> | <span class="text-muted">{{article.published|date:"DATETIME_FORMAT"}}</span>
+                    </p>
+                    <p>
+                        {{article.content|truncatewords:50}} <a href="{% url 'article:detail' article.slug %}">Read More</a>
+                    </p>
+                </div>
+            </div>
             {% endfor %}
 
             <!-- pagination -->
@@ -70,7 +74,7 @@
             <ul class="list-group">
                 {% for category in categories %}
                 <li class="list-group-item">
-                    <a href="{% url 'article:category' category %}">
+                    <a class="text-capitalize" href="{% url 'article:category' category 1 %}">
                         {{category}}
                     </a>
                 </li>

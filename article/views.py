@@ -1,4 +1,6 @@
-from django.views.generic import ListView, DetailView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from .forms import ArticleForm
 from .models import Article
 
 # Create your views here.
@@ -28,7 +30,7 @@ class ArticleCategoryListView(ListView):
     # query by category from kwargs
     def get_queryset(self):
         self.queryset = self.model.objects.filter(category = self.kwargs['category'])
-        self.extra_context['title'] =  f"Article {self.kwargs['category']}"
+        self.extra_context['active_category'] =  self.kwargs['category']
         queryset = super().get_queryset()
         return queryset
     
@@ -53,3 +55,35 @@ class ArticleDetailView(DetailView):
 
         context = super().get_context_data(**kwargs)
         return context
+
+class ArticleCreateView(CreateView):
+    form_class = ArticleForm
+    template_name = 'article/article_create.html'
+
+class ArticleManageView(ListView):
+    model = Article
+    template_name = 'article/article_manage.html'
+    context_object_name = 'articles'
+    ordering = ['-published']
+
+class ArticleUpdateView(UpdateView):
+    model = Article
+    form_class = ArticleForm
+    template_name = 'article/article_update.html'
+
+class ArticleDeleteView(DeleteView):
+    model = Article
+    success_url = reverse_lazy('article:manage')
+
+class ArticleEachCategory():
+    model = Article
+
+    def get_latest_article_each_category(self):
+        categories = self.model.objects.values_list('category', flat=True).distinct()
+        querysets = []
+
+        for category in categories :
+            article = self.model.objects.filter(category = category).latest('published')
+            querysets.append(article)
+
+        return querysets
