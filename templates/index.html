@@ -6,8 +6,15 @@
     
 
 {% block contents %}
-    <h1>Latest Article!!</h1>
+    {% if user.is_authenticated %}
+        <h1>Hi, {{user.username}}</h1>
+    {% else %}
+        <h1>You're not logged in</h1>
+        <a class="btn btn-outline-info" href="{% url 'login' %}">Log In</a>
+    {% endif %}
+        
     <hr>
+    <h3>Latest Article!!</h3>
     <div class="row">
         {% for article in latest_articles %}
             <div class="col-sm-4 mb-4">
