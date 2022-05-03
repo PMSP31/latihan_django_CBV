@@ -5,6 +5,15 @@
 {% endblock page_title %}
     
 {% block contents %}
+    {% if user.is_authenticated == False %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>You're not logged in!</strong> Please login to get access.
+        <strong><a href="{% url 'login'%}">login here</a></strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endif %}
     <div class="row">
         <!-- main bar -->
         <div class="col-md-8">

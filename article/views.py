@@ -1,7 +1,15 @@
-from django.urls import reverse_lazy
+from django.http import JsonResponse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .forms import ArticleForm
 from .models import Article
+
+# check user in group authors
+class CheckAuthors(UserPassesTestMixin):
+    # test group user
+    def test_func(self):
+        return self.request.user.groups.filter(name='authors').exists()
 
 # Create your views here.
 class ArticleListView(ListView):
@@ -56,22 +64,38 @@ class ArticleDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         return context
 
-class ArticleCreateView(CreateView):
+class ArticleCreateView(LoginRequiredMixin, CheckAuthors ,CreateView):
+    # redirect when user not login & access view
+    login_url = '/account/login/'
+    redirect_field_name = 'redirect_to'
+    
     form_class = ArticleForm
     template_name = 'article/article_create.html'
 
-class ArticleManageView(ListView):
+class ArticleManageView(LoginRequiredMixin, CheckAuthors ,ListView):
+    # redirect when user not login & access view
+    login_url = '/account/login/'
+    redirect_field_name = 'redirect_to'
+    
     model = Article
     template_name = 'article/article_manage.html'
     context_object_name = 'articles'
     ordering = ['-published']
 
-class ArticleUpdateView(UpdateView):
+class ArticleUpdateView(LoginRequiredMixin,UpdateView):
+    # redirect when user not login & access view
+    login_url = '/account/login/'
+    redirect_field_name = 'redirect_to'
+    
     model = Article
     form_class = ArticleForm
     template_name = 'article/article_update.html'
 
-class ArticleDeleteView(DeleteView):
+class ArticleDeleteView(LoginRequiredMixin,DeleteView):
+    # redirect when user not login & access view
+    login_url = '/account/login/'
+    redirect_field_name = 'redirect_to'
+    
     model = Article
     success_url = reverse_lazy('article:manage')
 
