@@ -23,6 +23,8 @@ class ArticleListView(ListView):
     # get all category
     def get_context_data(self, **kwargs):
         categories = self.model.objects.values_list('category', flat = True).distinct()
+        # published_articles = self.model.objects.filter(is_published = True)
+        # self.extra_context['articles'] = published_articles
         self.extra_context['categories'] = categories
         context = super().get_context_data(**kwargs)
         return context
