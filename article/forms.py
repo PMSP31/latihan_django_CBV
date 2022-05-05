@@ -7,7 +7,8 @@ class ArticleForm(forms.ModelForm):
         fields = [
             'title',
             'content',
-            'category'
+            'category',
+            'is_published'
         ]
         widgets = {
             'title': forms.TextInput(

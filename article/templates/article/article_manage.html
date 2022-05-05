@@ -8,13 +8,14 @@
 {% block contents %}
     <h1>Manage All Articles</h1>
       <a class="btn btn-primary" href="{% url 'article:create' %}">Create Article</a>
-      <table class="table mt-4">
+      <table class="table mt-4 text-center">
         <thead class="thead-dark">
           <tr>
             <th scope="col">No.</th>
             <th scope="col">Name_Article</th>
-            <th scope="col">Published</th>
+            <th scope="col">Created</th>
             <th scope="col">Category</th>
+            <th scope="col">Published</th>
             <th scope="col">Update</th>
             <th scope="col">Delete</th>
           </tr>
@@ -24,8 +25,15 @@
             <tr>
                 <th scope="row">{{forloop.counter}}</th>
                 <td>{{article.title}}</td>
-                <td>{{article.published|date:"SHORT_DATE_FORMAT"}}</td>
+                <td>{{article.created|date:"SHORT_DATE_FORMAT"}}</td>
                 <td class="text-capitalize">{{article.category}}</td>
+                <td>
+                {% if article.is_published == True %}
+                  <i class="fas fa-check-circle text-success"></i>
+                {% else %}
+                  <i class="fas fa-times-circle text-danger"></i>
+                {% endif %}
+                  </td>
                 <td><a href="{% url 'article:update' article.id %}" class="btn btn-outline-warning">Update</a></td>
                 <td><a href="{% url 'article:delete' article.id %}" class="btn btn-danger">Delete</a></td>
             </tr> 

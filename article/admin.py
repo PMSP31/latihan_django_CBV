@@ -8,6 +8,7 @@ class ArticleAdmin(admin.ModelAdmin):
         if obj != None :
             if user.has_perm('article.publish_article'):
                 readonly_fields = [
+                        'author',
                         'slug', 
                         'published', 
                         'updated'
@@ -18,6 +19,7 @@ class ArticleAdmin(admin.ModelAdmin):
                     return [field.name for field in Article._meta.fields]
                 else:
                     readonly_fields = [
+                            'author',
                             'slug',
                             'is_published',
                             'published', 
@@ -26,6 +28,7 @@ class ArticleAdmin(admin.ModelAdmin):
                     return readonly_fields
         else:
             readonly_fields = [
+                    'author',
                     'slug',
                     'is_published',
                     'published', 

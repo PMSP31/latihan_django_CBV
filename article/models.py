@@ -2,7 +2,10 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.conf import settings
+from django_currentuser.db.models import CurrentUserField
 
+User = settings.AUTH_USER_MODEL
 
 # Create your models here.
 class Article(models.Model):
@@ -13,6 +16,7 @@ class Article(models.Model):
         ('programming', 'Programming')
     )
     
+    author = CurrentUserField()
     title = models.CharField(max_length=100)
     content = models.TextField()
     category = models.CharField(max_length=50, default='blog', choices=LIST_CATEGORY)

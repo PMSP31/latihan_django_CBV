@@ -1,4 +1,3 @@
-from django.http import JsonResponse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -11,11 +10,16 @@ class CheckAuthors(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.groups.filter(name='authors').exists()
 
+class CheckPublisher(UserPassesTestMixin):
+    # test group user
+    def test_func(self):
+        return self.request.user.groups.filter(name='publisher').exists()
+
 # Create your views here.
 class ArticleListView(ListView):
     model = Article
     template_name = 'article/article_list.html'
-    context_object_name = 'articles'
+    # context_object_name = 'articles'
     ordering = ['-published']
     paginate_by = 3
     extra_context = {}
@@ -23,8 +27,9 @@ class ArticleListView(ListView):
     # get all category
     def get_context_data(self, **kwargs):
         categories = self.model.objects.values_list('category', flat = True).distinct()
-        # published_articles = self.model.objects.filter(is_published = True)
-        # self.extra_context['articles'] = published_articles
+        published_articles = self.model.objects.filter(is_published = True).distinct()
+        self.extra_context['articles'] = published_articles
+        print(self.extra_context['articles'])
         self.extra_context['categories'] = categories
         context = super().get_context_data(**kwargs)
         return context
@@ -74,7 +79,7 @@ class ArticleCreateView(LoginRequiredMixin, CheckAuthors ,CreateView):
     form_class = ArticleForm
     template_name = 'article/article_create.html'
 
-class ArticleManageView(LoginRequiredMixin, CheckAuthors ,ListView):
+class ArticleManageView(LoginRequiredMixin, CheckPublisher ,ListView):
     # redirect when user not login & access view
     login_url = '/account/login/'
     redirect_field_name = 'redirect_to'
@@ -82,9 +87,9 @@ class ArticleManageView(LoginRequiredMixin, CheckAuthors ,ListView):
     model = Article
     template_name = 'article/article_manage.html'
     context_object_name = 'articles'
-    ordering = ['-published']
+    ordering = ['-is_published', 'published']
 
-class ArticleUpdateView(LoginRequiredMixin,UpdateView):
+class ArticleUpdateView(LoginRequiredMixin, CheckPublisher, UpdateView):
     # redirect when user not login & access view
     login_url = '/account/login/'
     redirect_field_name = 'redirect_to'
@@ -93,7 +98,7 @@ class ArticleUpdateView(LoginRequiredMixin,UpdateView):
     form_class = ArticleForm
     template_name = 'article/article_update.html'
 
-class ArticleDeleteView(LoginRequiredMixin,DeleteView):
+class ArticleDeleteView(LoginRequiredMixin, CheckPublisher, DeleteView):
     # redirect when user not login & access view
     login_url = '/account/login/'
     redirect_field_name = 'redirect_to'
