@@ -13,19 +13,24 @@ class ArticleForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(
                 attrs={
-                    'class' : 'form-control col-sm-6',
+                    'class' : 'form-control',
                     'placeholder' : 'Article Title'
                 }
             ),
             'content' : forms.Textarea(
                 attrs={
-                    'class' : 'form-control col-sm-6',
+                    'class' : 'form-control',
                     'placeholder' : 'Article Content'
                 }
             ),
             'category' : forms.Select(
                 attrs={
-                    'class' : 'form-control col-sm-6'
+                    'class' : 'form-control'
+                }
+            ),
+            'is_published' : forms.CheckboxInput(
+                attrs={
+                    'class' : 'form-check-input'
                 }
             )
         }

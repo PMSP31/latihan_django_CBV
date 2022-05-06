@@ -11,3 +11,8 @@ urlpatterns = [
     path('account/', include('account.urls', namespace = 'account')),
     path('article/', include('article.urls', namespace = 'article'))
 ]
+
+handler404 = 'blog.views.page_not_found_view'
+handler500 = 'blog.views.error_view'
+handler403 = 'blog.views.permission_denied_view'
+handler400 = 'blog.views.bad_request_view'

@@ -7,7 +7,6 @@
 
 {% block contents %}
     <h1>Manage All Articles</h1>
-      <a class="btn btn-primary" href="{% url 'article:create' %}">Create Article</a>
       <table class="table mt-4 text-center">
         <thead class="thead-dark">
           <tr>
@@ -24,7 +23,7 @@
             {% for article in articles %}
             <tr>
                 <th scope="row">{{forloop.counter}}</th>
-                <td>{{article.title}}</td>
+                <td><a href="{% url 'article:detail' article.slug %}">{{article.title}}</a></td>
                 <td>{{article.created|date:"SHORT_DATE_FORMAT"}}</td>
                 <td class="text-capitalize">{{article.category}}</td>
                 <td>

@@ -1,0 +1,17 @@
+{% extends 'errors/base_error.html' %}
+{% load static %}
+
+{% block page_title %}
+    400 BAD REQUEST !!
+{% endblock page_title %}
+    
+
+{% block contents %}
+    <div class="image-error">
+        <img src="{% static 'img/bad_request.svg' %}" alt="404 Page Not Found!!">
+    </div>
+    <h1 class="text-center mt-5">Something Went Wrong On Your Request</h1>
+    <h5 class="text-center">
+        <a href="{% url 'index' %}">Back To Home</a>
+    </h5>
+{% endblock contents %}
